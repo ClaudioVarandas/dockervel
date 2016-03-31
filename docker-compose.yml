@@ -1,0 +1,40 @@
+data:
+  build: ./data
+  volumes:
+    - ../../Projects/project-x:/var/www/project-x
+php7-fpm:
+  build: ./php7-fpm
+  volumes_from:
+    - data
+  links:
+    - db:db
+nginx:
+  build: ./nginx
+  ports:
+    - 80:80
+    - 443:443
+  volumes_from:
+    - data
+  links:
+    - php7-fpm
+  env_file:
+    - ./nginx/nginx.env
+db:
+  image: mysql:5.7.11
+  ports:
+    - 3306:3306
+  env_file:
+    - ./db/db.env
+    - ./db/dbroot.env
+composer:
+  build: ./composer
+  volumes_from:
+    - data
+  links:
+    - db:db
+artisan:
+ build: ./artisan
+ volumes_from:
+   - data
+ links:
+   - db:db
