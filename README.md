@@ -1,6 +1,6 @@
 # Dockervel
 
-![Laravel Docker logos](http://imgur.com/8IvfIn6)
+![Laravel Docker logos](http://i.imgur.com/8IvfIn6.jpg?2)
 
 ## App containers
 
