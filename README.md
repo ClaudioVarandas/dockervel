@@ -19,4 +19,35 @@
 
 ## Usage
 
-TODO
+### Install
+
+1) Install docker machine:
+
+  - `curl -L https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-'uname -s'-'uname -m' > /usr/local/bin/docker-machine && \ chmod +x /usr/local/bin/docker-machine`
+
+  Info [link](https://docs.docker.com/machine/install-machine/)
+
+2) Create a docker machine to host containers:
+
+  - `docker-machine create --driver virtualbox docker-host`
+
+3) To run a docker command against that host:
+
+  - `eval "$(docker-machine env docker-host)"``
+
+4) Start all containers, in the first start the images will be created.
+
+  - `docker-compose up -d`
+
+
+Other commands
+===================
+
+
+  Stop all containers:
+  `docker-compose stop`
+
+  Stop and destroy all containers
+  `docker-compose down`
+
+  
