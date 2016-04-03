@@ -35,6 +35,8 @@
 
   - `eval "$(docker-machine env docker-host)"``
 
+  Info [link](https://docs.docker.com/machine/reference/env/)
+
 4) Start all containers, in the first start the images will be created.
 
   - `docker-compose up -d`
