@@ -17,6 +17,10 @@
 - Docker Machine ([Download](https://docs.docker.com/machine/install-machine/))
 - Git ([Download](https://git-scm.com/downloads))
 
+## Containers Diagram
+
+![DockerVel Diagram](http://i.imgur.com/1PzGNPC.png)
+
 ## Usage
 
 ### Install
