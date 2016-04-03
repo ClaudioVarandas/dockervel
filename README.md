@@ -19,7 +19,7 @@
 
 ## Containers Diagram
 
-![DockerVel Diagram](http://i.imgur.com/1PzGNPC.png)
+![DockerVel Diagram](http://i.imgur.com/hyknxWO.png)
 
 ## Usage
 
