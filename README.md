@@ -40,8 +40,7 @@
   - `docker-compose up -d`
 
 
-Other commands
-===================
+### Other commands
 
 
   Stop all containers:
@@ -49,5 +48,3 @@ Other commands
 
   Stop and destroy all containers
   `docker-compose down`
-
-  
