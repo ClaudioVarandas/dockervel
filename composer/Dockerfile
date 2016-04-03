@@ -1,4 +1,4 @@
-# PHP 7 - Fpm
+# PHP Composer
 #
 # VERSION               0.0.1
 
