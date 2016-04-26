@@ -1,7 +1,7 @@
 #!/bin/bash
 
-chown nginx:nginx -R /var/www/project-x
-chmod 777 -R /var/www/project-x/storage
+chown www-data:www-data -R /var/www/fixeads
+#chmod 777 -R /var/www/fixeads/storage
 
 exec "$@" &
 

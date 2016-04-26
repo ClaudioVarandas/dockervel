@@ -1,13 +1,18 @@
 data:
   build: ./data
   volumes:
-    - ../../Projects/project-x:/var/www/project-x
+    - ../../Projects/fixeads:/var/www/fixeads
+  links:
+   - db:db
+  container_name: px_data
 php7-fpm:
   build: ./php7-fpm
   volumes_from:
     - data
   links:
     - db:db
+  working_dir: /var/www/fixeads
+  container_name: px_php
 nginx:
   build: ./nginx
   ports:
@@ -19,6 +24,7 @@ nginx:
     - php7-fpm
   env_file:
     - ./nginx/nginx.env
+  container_name: px_nginx
 db:
   image: mysql:5.7.11
   ports:
@@ -26,15 +32,4 @@ db:
   env_file:
     - ./db/db.env
     - ./db/dbroot.env
-composer:
-  build: ./composer
-  volumes_from:
-    - data
-  links:
-    - db:db
-artisan:
- build: ./artisan
- volumes_from:
-   - data
- links:
-   - db:db
+  container_name: px_mysql

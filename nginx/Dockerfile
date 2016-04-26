@@ -1,24 +1,64 @@
 # Nginx
 #
-# VERSION               0.0.1
+# VERSION               0.2.0
 
-FROM debian:jessie
+FROM alpine:3.3
+
 MAINTAINER Cláudio Varandas <cvarandas@gmail.com>
 
-RUN echo 'deb http://mirrors.fe.up.pt/dotdeb/ stable all' >> /etc/apt/sources.list && \
-    echo 'deb-src http://mirrors.fe.up.pt/dotdeb/ stable all' >> /etc/apt/sources.list && \
-    apt-get update && apt-get install -y wget && \
-    wget https://www.dotdeb.org/dotdeb.gpg && \
-    apt-key add dotdeb.gpg && \
-    apt-get update && \
-    apt-get install -y nginx
+RUN \
+  build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" && \
+  runtime_pkgs="ca-certificates openssl pcre zlib" && \
+  apk --update add ${build_pkgs} ${runtime_pkgs} && \
+  cd /tmp && \
+  wget http://nginx.org/download/nginx-1.8.1.tar.gz && \
+  tar xzf nginx-1.8.1.tar.gz && \
+  cd /tmp/nginx-1.8.1 && \
+  ./configure \
+    --prefix=/etc/nginx \
+    --sbin-path=/usr/sbin/nginx \
+    --conf-path=/etc/nginx/nginx.conf \
+    --error-log-path=/var/log/nginx/error.log \
+    --http-log-path=/var/log/nginx/access.log \
+    --pid-path=/var/run/nginx.pid \
+    --lock-path=/var/run/nginx.lock \
+    --http-client-body-temp-path=/var/cache/nginx/client_temp \
+    --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+    --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+    --user=www-data \
+    --group=www-data \
+    --with-http_ssl_module \
+    --with-http_realip_module \
+    --with-http_addition_module \
+    --with-http_sub_module \
+    --with-http_dav_module \
+    --with-http_flv_module \
+    --with-http_mp4_module \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_random_index_module \
+    --with-http_secure_link_module \
+    --with-http_stub_status_module \
+    --with-http_auth_request_module \
+    --with-mail \
+    --with-mail_ssl_module \
+    --with-file-aio \
+    --with-http_spdy_module \
+    --with-ipv6 && \
+  make && \
+  make install && \
+  adduser -D www-data && \
+  rm -rf /tmp/* && \
+  apk del ${build_pkgs} && \
+  apk add bash && \
+  rm -rf /var/cache/apk/*
 
-RUN useradd nginx
+
+VOLUME ["/var/cache/nginx"]
 
 ADD nginx.conf /etc/nginx/
-ADD projectx.conf /etc/nginx/sites-available/
+ADD vhost.conf /etc/nginx/sites-enabled/
 
-RUN ln -s /etc/nginx/sites-available/projectx.conf /etc/nginx/sites-enabled/projectx
-RUN rm /etc/nginx/sites-enabled/default
-
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
